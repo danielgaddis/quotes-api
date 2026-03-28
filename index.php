@@ -3,6 +3,14 @@
 declare(strict_types=1);
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 require_once __DIR__ . '/db.php';
 
@@ -84,11 +92,13 @@ function handleQuotes(string $method, array $queryParams, PDO $pdo): void
         $stmt->execute($params);
         $quotes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($quotes)) {
-            respond(['message' => 'No Quotes Found'], 404);
+        if (empty($quotes)) 
+        {
+            respond(['message' => 'No Quotes Found']);
         }
 
-        if (isset($queryParams['id'])) {
+        if (isset($queryParams['id'])) 
+        {
             respond($quotes[0]);
         }
 
@@ -104,19 +114,19 @@ function handleQuotes(string $method, array $queryParams, PDO $pdo): void
             !isset($input['category_id']) ||
             trim((string)$input['quote']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $authorCheck = $pdo->prepare('SELECT id FROM authors WHERE id = ?');
         $authorCheck->execute([$input['author_id']]);
         if (!$authorCheck->fetch()) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'author_id Not Found']);
         }
 
         $categoryCheck = $pdo->prepare('SELECT id FROM categories WHERE id = ?');
         $categoryCheck->execute([$input['category_id']]);
         if (!$categoryCheck->fetch()) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'category_id Not Found']);
         }
 
         $stmt = $pdo->prepare(
@@ -151,25 +161,25 @@ function handleQuotes(string $method, array $queryParams, PDO $pdo): void
             !isset($input['category_id']) ||
             trim((string)$input['quote']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $quoteCheck = $pdo->prepare('SELECT id FROM quotes WHERE id = ?');
         $quoteCheck->execute([$input['id']]);
         if (!$quoteCheck->fetch()) {
-            respond(['message' => 'No Quotes Found'], 404);
+            respond(['message' => 'No Quotes Found']);
         }
 
         $authorCheck = $pdo->prepare('SELECT id FROM authors WHERE id = ?');
         $authorCheck->execute([$input['author_id']]);
         if (!$authorCheck->fetch()) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'author_id Not Found']);
         }
 
         $categoryCheck = $pdo->prepare('SELECT id FROM categories WHERE id = ?');
         $categoryCheck->execute([$input['category_id']]);
         if (!$categoryCheck->fetch()) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'category_id Not Found']);
         }
 
         $stmt = $pdo->prepare(
@@ -198,7 +208,7 @@ function handleQuotes(string $method, array $queryParams, PDO $pdo): void
         $input = getInputData();
 
         if (!isset($input['id'])) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('SELECT id FROM quotes WHERE id = ?');
@@ -206,7 +216,7 @@ function handleQuotes(string $method, array $queryParams, PDO $pdo): void
         $quote = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$quote) {
-            respond(['message' => 'No Quotes Found'], 404);
+            respond(['message' => 'No Quotes Found']);
         }
 
         $stmt = $pdo->prepare('DELETE FROM quotes WHERE id = ?');
@@ -232,11 +242,13 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
         $stmt->execute($params);
         $authors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (empty($authors)) {
-            respond(['message' => 'author_id Not Found'], 404);
+        if (empty($authors)) 
+        {
+            respond(['message' => 'author_id Not Found']);
         }
 
-        if (isset($queryParams['id'])) {
+        if (isset($queryParams['id'])) 
+        {
             respond($authors[0]);
         }
 
@@ -251,7 +263,7 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
             !isset($input['author']) ||
             trim((string)$input['author']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('INSERT INTO authors (author) VALUES (?)');
@@ -271,14 +283,14 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
         $input = getInputData();
 
         if (!isset($input['id'])) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         if (
             !isset($input['author']) ||
             trim((string)$input['author']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('SELECT id FROM authors WHERE id = ?');
@@ -286,7 +298,7 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
         $existingAuthor = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$existingAuthor) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'author_id Not Found']);
         }
 
         $stmt = $pdo->prepare('UPDATE authors SET author = ? WHERE id = ?');
@@ -307,7 +319,7 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
         $input = getInputData();
 
         if (!isset($input['id'])) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('SELECT id FROM authors WHERE id = ?');
@@ -315,7 +327,7 @@ function handleAuthors(string $method, array $queryParams, PDO $pdo): void
         $author = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$author) {
-            respond(['message' => 'author_id Not Found'], 404);
+            respond(['message' => 'author_id Not Found']);
         }
 
         $stmt = $pdo->prepare('DELETE FROM authors WHERE id = ?');
@@ -342,7 +354,7 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
         $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (empty($categories)) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'category_id Not Found']);
         }
 
         if (isset($queryParams['id'])) {
@@ -360,7 +372,7 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
             !isset($input['category']) ||
             trim((string)$input['category']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('INSERT INTO categories (category) VALUES (?)');
@@ -380,14 +392,14 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
         $input = getInputData();
 
         if (!isset($input['id'])) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         if (
             !isset($input['category']) ||
             trim((string)$input['category']) === ''
         ) {
-            respond(['message' => 'Missing Required Parameters'], 400);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('SELECT id FROM categories WHERE id = ?');
@@ -395,7 +407,7 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
         $existingCategory = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$existingCategory) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'category_id Not Found']);
         }
 
         $stmt = $pdo->prepare('UPDATE categories SET category = ? WHERE id = ?');
@@ -416,7 +428,7 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
         $input = getInputData();
 
         if (!isset($input['id'])) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'Missing Required Parameters']);
         }
 
         $stmt = $pdo->prepare('SELECT id FROM categories WHERE id = ?');
@@ -424,7 +436,7 @@ function handleCategories(string $method, array $queryParams, PDO $pdo): void
         $category = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$category) {
-            respond(['message' => 'category_id Not Found'], 404);
+            respond(['message' => 'category_id Not Found']);
         }
 
         $stmt = $pdo->prepare('DELETE FROM categories WHERE id = ?');
@@ -455,3 +467,5 @@ function respond(array $data, int $statusCode = 200): void
     echo json_encode($data, JSON_PRETTY_PRINT);
     exit;
 }
+
+?>
