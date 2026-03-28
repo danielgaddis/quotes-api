@@ -1,2 +1,1 @@
-# quotes-api
-Midterm project: PHP REST API
+Daniel Gaddis
