@@ -6,9 +6,9 @@
 
 ## 🌐 Endpoints
 
-- [Quotes](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/index.php/quotes)
-- [Authors](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/index.php/authors)
-- [Categories](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/index.php/categories)
+- [Quotes](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/api/quotes)
+- [Authors](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/api/authors)
+- [Categories](https://quotes-api-app-dkfncme2gvbfazcj.centralus-01.azurewebsites.net/api/categories)
 
 ---
 

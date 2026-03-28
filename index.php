@@ -10,6 +10,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($requestUri, PHP_URL_PATH);
 $path = preg_replace('#^/index\.php#', '', $path);
+$path = preg_replace('#^/api#', '', $path);
 $path = rtrim($path, '/');
 
 if ($path === '') {
